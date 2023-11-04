@@ -92,16 +92,17 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 }
 
 class TelaRepositorio extends StatefulWidget {
-  const TelaRepositorio({Key? key}) : super(key: key);
+  const TelaRepositorio({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TelaRepositorioState createState() => _TelaRepositorioState();
 }
 
 class _TelaRepositorioState extends State<TelaRepositorio> {
   final List<Recurso> _recursos = [
     Recurso(
-      titulo: "Introdução à Programação",
+      titulo: "Introdução à Programação em Python",
       descricao: "Apostila de Introdução à Programação em Python",
       disciplina: "Programação",
     ),
@@ -183,9 +184,10 @@ class Recurso {
 }
 
 class TelaAgenda extends StatefulWidget {
-  const TelaAgenda({Key? key}) : super(key: key);
+  const TelaAgenda({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TelaAgendaState createState() => _TelaAgendaState();
 }
 
