@@ -319,7 +319,7 @@ class ItemAgenda {
 }
 
 class TelaEventosAcademicos extends StatelessWidget {
-  const TelaEventosAcademicos({Key? key}) : super(key: key);
+  const TelaEventosAcademicos({super.key});
 
   @override
   Widget build(BuildContext context) {
