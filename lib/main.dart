@@ -202,14 +202,44 @@ class _TelaAgendaState extends State<TelaAgenda> {
       appBar: AppBar(
         title: const Text("Agenda"),
       ),
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: _itensAgenda.length,
         itemBuilder: (context, index) {
           final item = _itensAgenda[index];
           return ListTile(
+            onTap: () {
+              _exibirDialogoVisualizarItemAgenda(context, item);
+            },
             title: Text(item.titulo),
-            subtitle: Text(item.descricao),
-            trailing: Text(item.data), // Mostrar a data
+            subtitle: Column(
+              children: [
+                Text(item.descricao),
+                Text(item.data),
+              ],
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    _exibirDialogoEditarItemAgenda(context, item, index);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _excluirItemAgenda(index);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(
+            height: 1,
+            color: Colors.black, // Mostrar a data
           );
         },
       ),
@@ -303,6 +333,112 @@ class _TelaAgendaState extends State<TelaAgenda> {
         );
       },
     );
+  }
+
+  void _exibirDialogoVisualizarItemAgenda(BuildContext context, ItemAgenda item) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(item.titulo),
+          content: Text(item.descricao),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Fechar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _exibirDialogoEditarItemAgenda(BuildContext context, ItemAgenda item, int index) {
+  final controladorTitulo = TextEditingController(text: item.titulo);
+  final controladorDescricao = TextEditingController(text: item.descricao);
+  final controladorData = TextEditingController(text: item.data);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Editar Atividade"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: controladorTitulo,
+              decoration: const InputDecoration(labelText: "Título"),
+            ),
+            TextField(
+              controller: controladorDescricao,
+              decoration: const InputDecoration(labelText: "Descrição"),
+            ),
+            TextField(
+              controller: controladorData,
+              decoration: const InputDecoration(labelText: "Data (Formato: dd/mm/yyyy)"),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Cancelar",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              final data = controladorData.text;
+              final dataParts = data.split('/'); // Dividir a data em dia, mês e ano
+              if (dataParts.length == 3) {
+                final dia = int.tryParse(dataParts[0]);
+                final mes = int.tryParse(dataParts[1]);
+                final ano = int.tryParse(dataParts[2]);
+                if (dia != null && mes != null && ano != null) {
+                  if (dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 1900) {
+                    final dataFormatada = '$dia/$mes/$ano';
+                    setState(() {
+                      _itensAgenda[index] = ItemAgenda(
+                        titulo: controladorTitulo.text,
+                        descricao: controladorDescricao.text,
+                        data: dataFormatada,
+                      );
+                      controladorTitulo.clear();
+                      controladorDescricao.clear();
+                      controladorData.clear();
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    // Tratar erro de data fora do intervalo
+                  }
+                } else {
+                  // Tratar erro de formato de data inválida
+                }
+              } else {
+                // Tratar erro de formato de data inválida
+              }
+            },
+            child: const Text(
+              "Salvar",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+  void _excluirItemAgenda(int index) {
+    setState(() {
+      _itensAgenda.removeAt(index);
+    });
   }
 }
 
