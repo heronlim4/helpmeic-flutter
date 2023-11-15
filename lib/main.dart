@@ -28,18 +28,33 @@ class TelaPrincipal extends StatefulWidget {
   State<TelaPrincipal> createState() => _TelaPrincipalState();
 }
 
-class _TelaPrincipalState extends State<TelaPrincipal> {
+class _TelaPrincipalState extends State<TelaPrincipal>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   int _indiceSelecionado = 0;
 
-  final List<Widget> _telas = [
-    const TelaRepositorio(),
-    const TelaAgenda(),
-    const TelaEventosAcademicos(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      length: 3,
+      initialIndex: _indiceSelecionado,
+      vsync: this,
+    );
 
-  void _aoClicarNoBotao(int indice) {
+    // Adicione este ouvinte para sincronizar o TabController com a BottomNavigationBar
+    _tabController.addListener(() {
+      setState(() {
+        _indiceSelecionado = _tabController.index;
+      });
+    });
+  }
+
+  void _aoClicarNaAba(int indice) {
     setState(() {
       _indiceSelecionado = indice;
+      _tabController.animateTo(
+          indice); // Adicione esta linha para sincronizar o TabController
     });
   }
 
@@ -49,53 +64,40 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       appBar: AppBar(
         title: const Text("HELPMe - IC"),
       ),
-      body: _telas[_indiceSelecionado],
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _aoClicarNoBotao(0);
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor, // Cor do texto do botão
-              ),
-              child: const Text('Repositório'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _aoClicarNoBotao(1);
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor, // Cor do texto do botão
-              ),
-              child: const Text('Agenda'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _aoClicarNoBotao(2);
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).primaryColor, // Cor do texto do botão
-              ),
-              child: const Text('Eventos'),
-            ),
-          ],
-        ),
+      body: TabBarView(
+        controller: _tabController,
+        children: const [
+          TelaRepositorio(),
+          TelaAgenda(),
+          TelaEventosAcademicos(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _indiceSelecionado,
+        onTap: _aoClicarNaAba,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder),
+            label: 'Repositório',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Agenda',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.event),
+            label: 'Eventos',
+          ),
+        ],
       ),
     );
   }
 }
 
 class TelaRepositorio extends StatefulWidget {
-  const TelaRepositorio({super.key});
+  const TelaRepositorio({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _TelaRepositorioState createState() => _TelaRepositorioState();
 }
 
@@ -115,6 +117,8 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
 
   List<Recurso> _recursosFiltrados = [];
 
+  TextEditingController _controllerPesquisa = TextEditingController();
+
   @override
   void initState() {
     _recursosFiltrados = _recursos;
@@ -126,8 +130,20 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
       _recursosFiltrados = _recursos
           .where((recurso) =>
               recurso.titulo.toLowerCase().contains(termoBusca.toLowerCase()) ||
-              recurso.disciplina.toLowerCase().contains(termoBusca.toLowerCase()))
+              recurso.descricao
+                  .toLowerCase()
+                  .contains(termoBusca.toLowerCase()) ||
+              recurso.disciplina
+                  .toLowerCase()
+                  .contains(termoBusca.toLowerCase()))
           .toList();
+    });
+  }
+
+  void _limparPesquisa() {
+    setState(() {
+      _controllerPesquisa.clear();
+      _recursosFiltrados = _recursos;
     });
   }
 
@@ -142,12 +158,18 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controllerPesquisa,
               onChanged: (termoBusca) {
                 _filtrarRecursos(termoBusca);
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Pesquisar por disciplina ou assunto",
                 labelStyle: TextStyle(color: Colors.blue),
+                suffixIcon: IconButton(
+                  onPressed: _limparPesquisa,
+                  icon: Icon(Icons.clear),
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),
@@ -159,7 +181,7 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
                   title: Text(_recursosFiltrados[index].titulo),
                   subtitle: Text(_recursosFiltrados[index].descricao),
                   onTap: () {
-                    // Adicione aqui o código para abrir o recurso selecionado.
+                    // add código para abrir o recurso selecionado.
                   },
                 );
               },
@@ -315,13 +337,13 @@ class _TelaAgendaState extends State<TelaAgenda> {
                         Navigator.pop(context);
                       });
                     } else {
-                      // Tratar erro de data fora do intervalo
+                       _exibirMensagemErro(context, "Data Inválida");
                     }
                   } else {
-                    // Tratar erro de formato de data inválida
+                     _exibirMensagemErro(context, "Data Inválida");
                   }
                 } else {
-                  // Tratar erro de formato de data inválida
+                   _exibirMensagemErro(context, "Data Inválida");
                 }
               },
               child: const Text(
@@ -415,13 +437,13 @@ class _TelaAgendaState extends State<TelaAgenda> {
                       Navigator.pop(context);
                     });
                   } else {
-                    // Tratar erro de data fora do intervalo
+                     _exibirMensagemErro(context, "Data Inválida");
                   }
                 } else {
-                  // Tratar erro de formato de data inválida
+                   _exibirMensagemErro(context, "Data Inválida");
                 }
               } else {
-                // Tratar erro de formato de data inválida
+                 _exibirMensagemErro(context, "Data Inválida");
               }
             },
             child: const Text(
@@ -435,12 +457,34 @@ class _TelaAgendaState extends State<TelaAgenda> {
   );
 }
 
+  void _exibirMensagemErro(BuildContext context, String mensagem) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Erro"),
+          content: Text(mensagem),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _excluirItemAgenda(int index) {
     setState(() {
       _itensAgenda.removeAt(index);
     });
   }
 }
+
+
 
 class ItemAgenda {
   final String titulo;
