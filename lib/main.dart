@@ -95,9 +95,10 @@ class _TelaPrincipalState extends State<TelaPrincipal>
 }
 
 class TelaRepositorio extends StatefulWidget {
-  const TelaRepositorio({Key? key}) : super(key: key);
+  const TelaRepositorio({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TelaRepositorioState createState() => _TelaRepositorioState();
 }
 
@@ -116,8 +117,8 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
   ];
 
   List<Recurso> _recursosFiltrados = [];
-
-  TextEditingController _controllerPesquisa = TextEditingController();
+  final
+  _controllerPesquisa = TextEditingController();
 
   @override
   void initState() {
@@ -164,7 +165,7 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
               },
               decoration: InputDecoration(
                 labelText: "Pesquisar por disciplina ou assunto",
-                labelStyle: TextStyle(color: Colors.blue),
+                labelStyle: const TextStyle(color: Colors.blue),
                 suffixIcon: IconButton(
                   onPressed: _limparPesquisa,
                   icon: const Icon(Icons.clear),
