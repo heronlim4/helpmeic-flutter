@@ -75,7 +75,7 @@ class _TelaPrincipalState extends State<TelaPrincipal>
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceSelecionado,
         onTap: _aoClicarNaAba,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.folder),
             label: 'Repositório',
@@ -167,7 +167,7 @@ class _TelaRepositorioState extends State<TelaRepositorio> {
                 labelStyle: TextStyle(color: Colors.blue),
                 suffixIcon: IconButton(
                   onPressed: _limparPesquisa,
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   color: Colors.grey,
                 ),
               ),
@@ -243,13 +243,13 @@ class _TelaAgendaState extends State<TelaAgenda> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () {
                     _exibirDialogoEditarItemAgenda(context, item, index);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     _excluirItemAgenda(index);
                   },
