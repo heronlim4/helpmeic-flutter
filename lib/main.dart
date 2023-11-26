@@ -271,7 +271,7 @@ class TelaAgenda extends StatefulWidget {
   _TelaAgendaState createState() => _TelaAgendaState();
 }
 
-class _TelaAgendaState extends State<TelaAgenda> {
+class _TelaAgendaState extends State<TelaAgenda> with AutomaticKeepAliveClientMixin {
   final List<ItemAgenda> _itensAgenda = [];
 
   @override
@@ -555,6 +555,10 @@ class _TelaAgendaState extends State<TelaAgenda> {
       _itensAgenda.removeAt(index);
     });
   }
+}
+
+  @override
+bool get wantKeepAlive => true;
 }
 
 class ItemAgenda {
