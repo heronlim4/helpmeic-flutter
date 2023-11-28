@@ -267,12 +267,18 @@ class TelaAgenda extends StatefulWidget {
   const TelaAgenda({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _TelaAgendaState createState() => _TelaAgendaState();
+  State<TelaAgenda> createState() => _TelaAgendaState();
 }
 
-class _TelaAgendaState extends State<TelaAgenda> with AutomaticKeepAliveClientMixin {
+class _TelaAgendaState extends State<TelaAgenda>
+    with AutomaticKeepAliveClientMixin {
   final List<ItemAgenda> _itensAgenda = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Carregar itens da agenda de um arquivo ou banco de dados
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -333,6 +339,9 @@ class _TelaAgendaState extends State<TelaAgenda> with AutomaticKeepAliveClientMi
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void _exibirDialogoAdicionarItemAgenda(BuildContext context) {
     final controladorTitulo = TextEditingController();
@@ -557,10 +566,6 @@ class _TelaAgendaState extends State<TelaAgenda> with AutomaticKeepAliveClientMi
   }
 }
 
-  @override
-bool get wantKeepAlive => true;
-}
-
 class ItemAgenda {
   final String titulo;
   final String descricao;
@@ -648,14 +653,22 @@ class TabelaGradeCurricularBSI extends StatelessWidget {
           ),
         ],
         rows: [
-          _buildRow('1° Semestre', 'MATA02', 'CÁLCULO A', 'https://drive.google.com/drive/folders/1wtZU9kLYrHhm1cP-S9lut_wZHAILW8fL'),
-          _buildRow('1° Semestre', 'MATA37',
-              'INTRODUÇÃO À LÓGICA DE PROGRAMAÇÃO', 'https://drive.google.com/drive/folders/10bMbnjWbsfNVxonl-IKUG4tcBpTaxlf4'),
+          _buildRow('1° Semestre', 'MATA02', 'CÁLCULO A',
+              'https://drive.google.com/drive/folders/1wtZU9kLYrHhm1cP-S9lut_wZHAILW8fL'),
           _buildRow(
-              '1° Semestre', 'MATA39', 'SEMINÁRIOS DE INTRODUÇÃO AO CURSO', 'https://drive.google.com/drive/folders/10eYXZzNIF5iiTJpbsg6hS-s03wD34jGH'),
-          _buildRow('1° Semestre', 'MATA42', 'MATEMÁTICA DISCRETA I', 'https://drive.google.com/drive/folders/10wQKkBNXNyDra4fKvjNLdocd5NavbOch'),
+              '1° Semestre',
+              'MATA37',
+              'INTRODUÇÃO À LÓGICA DE PROGRAMAÇÃO',
+              'https://drive.google.com/drive/folders/10bMbnjWbsfNVxonl-IKUG4tcBpTaxlf4'),
           _buildRow(
-              '1° Semestre', 'MATA68', 'COMPUTADOR, ÉTICA E SOCIEDADE', 'https://drive.google.com/drive/folders/10u0LDb0x5ifuXkZUzJ_0qDc5H4fcqXHv'),
+              '1° Semestre',
+              'MATA39',
+              'SEMINÁRIOS DE INTRODUÇÃO AO CURSO',
+              'https://drive.google.com/drive/folders/10eYXZzNIF5iiTJpbsg6hS-s03wD34jGH'),
+          _buildRow('1° Semestre', 'MATA42', 'MATEMÁTICA DISCRETA I',
+              'https://drive.google.com/drive/folders/10wQKkBNXNyDra4fKvjNLdocd5NavbOch'),
+          _buildRow('1° Semestre', 'MATA68', 'COMPUTADOR, ÉTICA E SOCIEDADE',
+              'https://drive.google.com/drive/folders/10u0LDb0x5ifuXkZUzJ_0qDc5H4fcqXHv'),
           _buildRow('2° Semestre', 'ADME99', 'ECONOMIA DA INOVAÇÃO', ''),
           _buildRow(
               '2° Semestre', 'MATC73', 'INTRODUÇÃO À LÓGICA MATEMÁTICA', ''),
