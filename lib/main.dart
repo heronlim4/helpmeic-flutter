@@ -611,7 +611,7 @@ class TelaGradeCurricular extends StatelessWidget {
           children: [
             if (curso == 'BSI') TabelaGradeCurricularBSI(),
             if (curso == 'BCC') TabelaGradeCurricularBCC(),
-            //if (curso == 'LC') TabelaGradeCurricularBSI(),
+            if (curso == 'LC') TabelaGradeCurricularLC(),
           ],
         ),
       ),
@@ -1156,3 +1156,147 @@ class TabelaGradeCurricularBCC extends StatelessWidget {
     }
   }
 }
+
+class TabelaGradeCurricularLC extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 15.0,
+        columns: [
+          DataColumn(
+            label: Text(
+              'Semestre',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Código',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Disciplina',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Link',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+        rows: [
+          _buildRow('1° Semestre', 'EDCB80', 'FILOSOFIA DA EDUCAÇÃO', ''),
+          _buildRow('1° Semestre', 'MATA01', 'GEOMETRIA ANALÍTICA', ''),
+          _buildRow(
+                    '1° Semestre',
+                    'MATA37',
+                    'INTRODUÇÃO À LÓGICA DE PROGRAMAÇÃO',
+                    'https://drive.google.com/drive/folders/10bMbnjWbsfNVxonl-IKUG4tcBpTaxlf4'),
+          _buildRow(
+                    '1° Semestre',
+                    'MATA39',
+                    'SEMINÁRIOS DE INTRODUÇÃO AO CURSO',
+                    'https://drive.google.com/drive/folders/10eYXZzNIF5iiTJpbsg6hS-s03wD34jGH'),
+          _buildRow('1° Semestre', 'MATA42', 'MATEMÁTICA DISCRETA I',
+                    'https://drive.google.com/drive/folders/10wQKkBNXNyDra4fKvjNLdocd5NavbOch'),
+          _buildRow('2° Semestre', 'EDC287', 'EDUCAÇÃO E TECNOLOGIAS CONTEMPORÂNEAS', ''),
+          _buildRow('2° Semestre', 'MATA68', 'COMPUTADOR, ÉTICA E SOCIEDADE',
+                        'https://drive.google.com/drive/folders/10u0LDb0x5ifuXkZUzJ_0qDc5H4fcqXHv'),
+          _buildRow('2° Semestre', 'MATC73', 'INTRODUÇÃO À LÓGICA MATEMÁTICA', ''),
+          _buildRow('2° Semestre', 'MATC81', 'SISTEMAS BÁSICOS DE COMPUTAÇÃO: ARQUITETURA E SOFTWARE', ''),
+          _buildRow('2° Semestre', 'MATD04', 'ESTRUTURAS DE DADOS', ''),
+          _buildRow('3° Semestre', 'EDCA01', 'FUNDAMENTOS PSICOLÓGICOS DA EDUCAÇÃO', ''),
+          _buildRow('3° Semestre', 'MAT236', 'MÉTODOS ESTATÍSTICOS', ''),
+          _buildRow('3° Semestre', 'MATA55', 'PROGRAMAÇÃO ORIENTADA A OBJETOS', ''),
+          _buildRow('3° Semestre', 'MATC94', 'INTRODUÇÃO AS LINGUAGENS FORMAIS E TEORIA DA COMPUTAÇÃO', ''),
+          _buildRow('4° Semestre', 'EDCA11', 'DIDÁTICA E PRAXIS PEDAGÓGICA I', ''),
+          _buildRow('4° Semestre', 'LETE46', 'LIBRAS-LÍNGUA BRASILEIRA DE SINAIS', ''),
+          _buildRow('4° Semestre', 'MATA41', 'INFORMÁTICA NA EDUCAÇÃO', ''),
+          _buildRow('4° Semestre', 'MATA59', 'REDES DE COMPUTADORES I', ''),
+          _buildRow('4° Semestre', 'MATA62', 'ENGENHARIA DE SOFTWARE I', ''),
+          _buildRow('4° Semestre', 'MATC82', 'SISTEMAS WEB', ''),
+          _buildRow('5° Semestre', 'EDC286', 'AVALIAÇÃO DA APRENDIZAGEM', ''),
+          _buildRow('5° Semestre', 'EDCA12', 'DIDÁTICA E PRAXIS PEDAGÓGICA II', ''),
+          _buildRow('5° Semestre', 'MATB19', 'SISTEMAS MULTIMÍDIA', ''),
+          _buildRow('5° Semestre', 'MATB21', 'AMBIENTES INTERATIVOS DE APRENDIZAGEM', ''),
+          _buildRow('5° Semestre', 'MATD05', 'BANCO DE DADOS E APLICAÇÕES', ''),
+          _buildRow('6° Semestre', 'MATB22', 'LABORATÓRIO DE INFORMÁTICA NA EDUCAÇÃO', ''),
+          _buildRow('6° Semestre', 'MATC68', 'ESTÁGIO SUPERVISIONADO I', ''),
+          _buildRow('6° Semestre', 'MATC72', 'INTERAÇÃO HUMANO-COMPUTADOR', ''),
+          _buildRow('6° Semestre', 'MATC76', 'PRÁTICA DE ENSINO DE COMPUTAÇÃO I', ''),
+          _buildRow('6° Semestre', 'MATC78', 'PROJETO DE SOFTWARE EDUCATIVO', ''),
+          _buildRow('7° Semestre', 'MATB20', 'INTELIGÊNCIA ARTIFICIAL EM EDUCAÇÃO', ''),
+          _buildRow('7° Semestre', 'MATC69', 'ESTÁGIO SUPERVISIONADO II', ''),
+          _buildRow('7° Semestre', 'MATC77', 'PRÁTICA DE ENSINO DE COMPUTAÇÃO II', ''),
+          _buildRow('7° Semestre', 'MATC79', 'PROJETOS INTERDISCIPLINARES: CONCEPÇÃO E PRÁTICA', ''),
+          _buildRow('8° Semestre', 'MATC70', 'ESTÁGIO SUPERVISIONADO III', ''),
+          _buildRow('89° Semestre', 'MATC71', 'ESTÁGIO SUPERVISIONADO IV', ''),
+          _buildRow('Optativas', 'EDC273', 'ANTROPOLOGIA DA EDUCAÇÃO', ''),
+          _buildRow('Optativas', 'MATA02', 'CÁLCULO A', 'https://drive.google.com/drive/folders/1wtZU9kLYrHhm1cP-S9lut_wZHAILW8fL'),
+          _buildRow('Optativas', 'MATC83', 'DESENVOLVIMENTO DE OBJETOS DE APRENDIZAGEM', ''),
+          _buildRow('Optativas', 'EDC251', 'DIMENSAO ESTETICA DA EDUCACAO', ''),
+          _buildRow('Optativas', 'EDC001', 'EDUCAÇÃO ABERTA, CONTINUADA E A DISTÂNCIA', ''),
+          _buildRow('Optativas', 'EDC267', 'EDUCACAO AMBIENTAL', ''),
+          _buildRow('Optativas', 'EDC248', 'EDUCACAO E IDENTIDADE CULTURAL', ''),
+          _buildRow('Optativas', 'MAT220', 'EMPREENDEDORES EM INFORMATICA', ''),
+          _buildRow('Optativas', 'MATA63', 'ENGENHARIA DE SOFTWARE II', ''),
+          _buildRow('Optativas', 'MAT198', 'FUNDAMENTOS DE MATEMATICA ELEMENTAR I-A', ''),
+          _buildRow('Optativas', 'EDC274', 'HISTORIA DA EDUCACAO 1', ''),
+          _buildRow('Optativas', 'EDCA05', 'HISTÓRIA DA EDUCAÇÃO BRASILEIRA', ''),
+          _buildRow('Optativas', 'LET358', 'INGLES INSTRUMENTAL III N-100', ''),
+          _buildRow('Optativas', 'LET359', 'INGLES INSTRUMENTAL IV N-100', ''),
+          _buildRow('Optativas', 'MATA64', 'INTELIGÊNCIA ARTIFICIAL', ''),
+          _buildRow('Optativas', 'MATB09', 'LABORATÓRIO DE BANCO DE DADOS', ''),
+          _buildRow('Optativas', 'MATB16', 'LABORATÓRIO DE INTELIGÊNCIA ARTIFICIAL', ''),
+          _buildRow('Optativas', 'MATA57', 'LABORATÓRIO DE PROGRAMAÇÃO I', ''),
+          _buildRow('Optativas', 'MATC75', 'LABORATÓRIO DE PROGRAMAÇÃO VISUAL', ''),
+          _buildRow('Optativas', 'MATC84', 'LABORATÓRIO DE PROGRAMAÇÃO WEB', ''),
+          _buildRow('Optativas', 'EDC303', 'METODOLOGIA DO ENSINO DA MATEMÁTICA', ''),
+          _buildRow('Optativas', 'EDC314', 'METODOLOGIA DO ENSINO DE CIÊNCIAS NATURAIS', ''),
+          _buildRow('Optativas', 'MATG09', 'OBSERVAÇÃO E REGÊNCIA DE SALA DE AULA', ''),
+          _buildRow('Optativas', 'EDC272', 'ORGANIZAÇÃO DA EDUCACAO BRASILEIRA 1', ''),
+          _buildRow('Optativas', 'EDC289', 'PESQUISA EM EDUCACAO', ''),
+          _buildRow('Optativas', 'MATC85', 'PRODUÇÃO DE MATERIAL EDUCATIVO DIGITAL', ''),
+          _buildRow('Optativas', 'MATB24', 'ROBÓTICA INTELIGENTE', ''),
+          _buildRow('Optativas', 'EDCB81', 'SOCIOLOGIA DA EDUCAÇÃO', ''),
+          _buildRow('Optativas', 'MATC86', 'TECNOLOGIAS DIGITAIS COMO ESTRATÉGIAS DE APRENDIZAGEM', ''),
+          _buildRow('Optativas', 'EDC321', 'TEE - POLÊMICAS CONTEMPORÂNEAS', ''),
+          _buildRow('Optativas', 'MATB05', 'TÓPICOS EM INTELIGÊNCIA ARTIFICIAL', ''),
+          _buildRow('Optativas', 'MATC87', 'TÓPICOS EM PROGRAMAÇÃO PARA EDUCAÇÃO', ''),
+          _buildRow('Optativas', 'MATB26', 'TÓPICOS EM SISTEMAS MULTIMÍDIA', ''),
+        ],
+      ),
+    );
+  }
+
+  DataRow _buildRow(
+      String semestre, String codigo, String disciplina, String link) {
+    return DataRow(cells: [
+      DataCell(Text(semestre)),
+      DataCell(Text(codigo)),
+      DataCell(InkWell(
+        onTap: () {
+          // Adicione a lógica para abrir o link
+          _abrirLink(link);
+        },
+        child: Text(disciplina, style: TextStyle(color: Colors.blue)),
+      )),
+      DataCell(Text('')), // Espaço para adição do link
+    ]);
+  }
+
+  void _abrirLink(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Não foi possível abrir o link: $url';
+    }
+  }
+}
+
