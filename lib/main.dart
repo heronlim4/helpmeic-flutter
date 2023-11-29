@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' as htmlParser;
+import 'package:html/dom.dart' as htmlDom;
 
 void main() {
   runApp(const MyApp());
@@ -578,8 +581,62 @@ class ItemAgenda {
   });
 }
 
-class TelaEventosAcademicos extends StatelessWidget {
-  const TelaEventosAcademicos({super.key});
+class Noticia {
+  final String titulo;
+  final String descricao;
+  final String link;
+
+  Noticia({required this.titulo, required this.descricao, required this.link});
+}
+
+class TelaEventosAcademicos extends StatefulWidget {
+  const TelaEventosAcademicos({Key? key}) : super(key: key);
+
+  @override
+  _TelaEventosAcademicosState createState() => _TelaEventosAcademicosState();
+}
+
+class _TelaEventosAcademicosState extends State<TelaEventosAcademicos> {
+  late List<Noticia> noticias;
+
+  @override
+  void initState() {
+    super.initState();
+    obterDadosDoServidor();
+  }
+
+  Future<void> obterDadosDoServidor() async {
+    final url = 'https://computacao.ufba.br/noticias';
+    final redirect = 'https://computacao.ufba.br';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final document = htmlParser.parse(response.body);
+
+        final noticiasHtml = document.querySelectorAll('div.views-row');
+
+        noticias = noticiasHtml.map((noticia) {
+          final titulo = noticia.querySelector('h2')?.text?.trim() ?? '';
+          final descricao = noticia.querySelector('div.field-name-body')?.text?.trim() ?? '';
+          final link = noticia.attributes['about'] ?? '';
+
+          return Noticia(
+            titulo: titulo,
+            descricao: descricao,
+            link: '$redirect$link',
+          );
+        }).toList();
+
+        setState(() {}); // Atualizar a interface com as notícias
+      } else {
+        print('Erro ao acessar a página. Código de status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Erro ao obter dados do servidor: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -587,12 +644,31 @@ class TelaEventosAcademicos extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Eventos Acadêmicos"),
       ),
-      body: const Center(
-        child: Text("Esta é a tela de Eventos Acadêmicos."),
-      ),
+      body: noticias != null
+          ? ListView.builder(
+              itemCount: noticias.length,
+              itemBuilder: (context, index) {
+                Noticia noticia = noticias[index];
+                return Card(
+                  child: ListTile(
+                    title: Text(noticia.titulo),
+                    subtitle: Text(noticia.descricao),
+                    onTap: () {
+                      // Aqui você pode adicionar a lógica para abrir o link
+                      print('Clicou na notícia ${noticia.titulo}');
+                      // Navegar para a URL completa
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewPage(url: noticia.link)));
+                    },
+                  ),
+                );
+              },
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
+
+
 
 class TelaGradeCurricular extends StatelessWidget {
   final String curso;
@@ -1299,4 +1375,6 @@ class TabelaGradeCurricularLC extends StatelessWidget {
     }
   }
 }
+
+
 
